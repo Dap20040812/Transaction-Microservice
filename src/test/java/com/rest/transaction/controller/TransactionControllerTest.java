@@ -2,6 +2,7 @@ package com.rest.transaction.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rest.transaction.proxy.AccountProxy;
 import com.rest.transaction.service.AccountService;
 import com.rest.transaction.service.TransactionService;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ public class TransactionControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private AccountService accountService;
+    private AccountProxy accountProxy;
 
     @MockBean
     private TransactionService transactionService;
@@ -61,7 +62,7 @@ public class TransactionControllerTest {
                 .put("amount",100);
         String jsonString = mapper.writeValueAsString(json);
         String successMessage = "Transaction completed successfully";
-        when(accountService.transfer(12345, 54321,100)).thenReturn(CompletableFuture.completedFuture(successMessage));
+        when(accountProxy.transfer(12345, 54321,100)).thenReturn(CompletableFuture.completedFuture(successMessage));
 
         mockMvc.perform(put("/transfer")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -82,7 +83,7 @@ public class TransactionControllerTest {
                 .put("amount",100);
         String jsonString = mapper.writeValueAsString(json);
         String successMessage = "Transaction completed successfully";
-        when(accountService.transfer(12345, 54321,100)).thenReturn(CompletableFuture.completedFuture("Insufficient funds in the source account"));
+        when(accountProxy.transfer(12345, 54321,100)).thenReturn(CompletableFuture.completedFuture("Insufficient funds in the source account"));
 
         mockMvc.perform(put("/transfer")
                         .contentType(MediaType.APPLICATION_JSON)

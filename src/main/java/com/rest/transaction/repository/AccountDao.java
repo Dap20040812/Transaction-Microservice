@@ -5,6 +5,8 @@ import com.rest.transaction.service.AccountBD;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class  AccountDao implements AccountBD {
@@ -19,5 +21,10 @@ public class  AccountDao implements AccountBD {
     @Override
     public int getBalance(int id) {
         return accountRepository.getBalance(id);
+    }
+
+    @Override
+    public Optional<Account> findById(int id) {
+        return accountRepository.findById(id);
     }
 }
